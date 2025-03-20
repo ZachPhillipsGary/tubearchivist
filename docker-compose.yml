@@ -53,6 +53,8 @@ services:
       memlock:
         soft: -1
         hard: -1
+    sysctls:
+      - vm.overcommit_memory=1
     volumes:
       - es:/usr/share/elasticsearch/data    # check for permission error when using bind mount, see readme
     expose:
