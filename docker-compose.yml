@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     image: bbilly1/tubearchivist
     ports:
-      - 8000:8000
+      - 8881:8000
     volumes:
       - media:/youtube
       - cache:/cache
