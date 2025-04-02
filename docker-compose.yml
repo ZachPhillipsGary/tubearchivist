@@ -17,8 +17,8 @@ services:
       - HOST_GID=1000
       - TA_HOST=http://tubearchivist.local  # set your host name with protocol and port
       - TA_USERNAME=tubearchivist           # your initial TA credentials
-      - TA_PASSWORD=verysecret              # your initial TA credentials
-      - ELASTIC_PASSWORD=verysecret         # set password for Elasticsearch
+      - TA_PASSWORD=crib-drastic-bovine              # your initial TA credentials
+      - ELASTIC_PASSWORD=crib-drastic-bovine         # set password for Elasticsearch
       - TZ=America/New_York                 # set your time zone
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
