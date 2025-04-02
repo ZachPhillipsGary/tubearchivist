@@ -1,5 +1,4 @@
 version: '3.5'
-
 services:
   tubearchivist:
     container_name: tubearchivist
@@ -8,18 +7,18 @@ services:
     ports:
       - 8881:8000
     volumes:
-      - media:/youtube
-      - cache:/cache
+      - /data/nfs_share/youtube:/youtube
+      - /data/nfs_share/cache:/cache
     environment:
-      - ES_URL=http://archivist-es:9200     # needs protocol e.g. http and port
+      - ES_URL=http://archivist-es:9200
       - REDIS_CON=redis://archivist-redis:6379
       - HOST_UID=1000
       - HOST_GID=1000
-      - TA_HOST=http://tubearchivist.local  # set your host name with protocol and port
-      - TA_USERNAME=tubearchivist           # your initial TA credentials
-      - TA_PASSWORD=crib-drastic-bovine              # your initial TA credentials
-      - ELASTIC_PASSWORD=crib-drastic-bovine         # set password for Elasticsearch
-      - TZ=America/New_York                 # set your time zone
+      - TA_HOST=http://tubearchivist.local
+      - TA_USERNAME=tubearchivist
+      - TA_PASSWORD=crib-drastic-bovine
+      - ELASTIC_PASSWORD=crib-drastic-bovine
+      - TZ=America/New_York
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 2m
@@ -36,15 +35,15 @@ services:
     expose:
       - "6379"
     volumes:
-      - redis:/data
+      - /data/nfs_share/redis:/data
     depends_on:
       - archivist-es
   archivist-es:
-    image: bbilly1/tubearchivist-es         # only for amd64, or use official es 8.17.2
+    image: bbilly1/tubearchivist-es
     container_name: archivist-es
     restart: unless-stopped
     environment:
-      - "ELASTIC_PASSWORD=verysecret"       # matching Elasticsearch password
+      - "ELASTIC_PASSWORD=verysecret"
       - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
       - "xpack.security.enabled=true"
       - "discovery.type=single-node"
@@ -56,12 +55,6 @@ services:
     sysctls:
       - vm.overcommit_memory=1
     volumes:
-      - es:/usr/share/elasticsearch/data    # check for permission error when using bind mount, see readme
+      - /data/nfs_share/es:/usr/share/elasticsearch/data
     expose:
       - "9200"
-
-volumes:
-  media:
-  cache:
-  redis:
-  es:
